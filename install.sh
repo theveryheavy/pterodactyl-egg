@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
-apt update
-apt -y install curl wget git unzip python3 python3-pip nodejs npm
 set -euo pipefail
+
+GREEN="\e[32m"
+YELLOW="\e[33m"
+CYAN="\e[36m"
+RED="\e[31m"
+RESET="\e[0m"
+
+apt update -y
+apt -y install curl wget git unzip python3 python3-pip nodejs npm >/dev/null 2>&1
+
 REPO_RAW_BASE="https://raw.githubusercontent.com/theveryheavy/pterodactyl-egg/main"
 TARGET_DIR="/home/container"
 FILES=(
@@ -11,11 +19,6 @@ FILES=(
   "dep_manager.sh"
   "anti_abuse_check.sh"
 )
-GREEN="\e[32m"
-YELLOW="\e[33m"
-CYAN="\e[36m"
-RED="\e[31m"
-RESET="\e[0m"
 
 mkdir -p "$TARGET_DIR"
 cd "$TARGET_DIR"
@@ -33,14 +36,12 @@ spinner() {
     done
   done
   wait "$pid"
-  return $?
 }
 
 download_file() {
   local file="$1"
   local url="${REPO_RAW_BASE}/${file}"
   local tmpfile=".tmp.${file}"
-  # Start curl in background, hide output
   ( curl -fsSL "$url" -o "$tmpfile" ) &
   local cpid=$!
   spinner "$cpid" "Downloading ${file}..."
@@ -52,7 +53,6 @@ download_file() {
   fi
   mv -f "$tmpfile" "$file"
   printf "  ${GREEN}✔ OK${RESET}  (%s)\n" "$file"
-  return 0
 }
 
 printf "${CYAN}HostingCo — Preparing Discord Bot server environment${RESET}\n\n"
@@ -66,7 +66,6 @@ done
 
 if [ $failed -ne 0 ]; then
   printf "\n${RED}Installation aborted: failed to download required files.${RESET}\n"
-  printf "Check the REPO_RAW_BASE variable in this install.sh and ensure files are public.\n"
   exit 2
 fi
 
@@ -75,4 +74,10 @@ chmod +x -- *.sh 2>/dev/null || true
 touch .setup_required .deps 2>/dev/null || true
 
 printf "\n${GREEN}Installation complete.${RESET}\n"
+printf "${YELLOW}Next steps:${RESET}\n"
+printf "  1) Start the server to run the interactive setup.\n"
+printf "  2) Upload your bot files and set the startup file in the Panel.\n"
+printf "  3) Dependencies and runtime checks will be handled automatically.\n"
+printf "${CYAN}Servers created later will fetch updated scripts from GitHub automatically.${RESET}\n\n"
+
 exit 0
