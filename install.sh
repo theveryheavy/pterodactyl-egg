@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 apt update
-apt -y install curl wget git unzip
+apt -y install curl wget git unzip python3 python3-pip nodejs npm
 set -euo pipefail
 REPO_RAW_BASE="https://raw.githubusercontent.com/theveryheavy/pterodactyl-egg/main"
 TARGET_DIR="/home/container"
@@ -74,4 +74,5 @@ printf "  2) Follow prompts to choose language/version/install method.\n"
 printf "  3) Upload your bot files and set the startup file in the Panel.\n\n"
 printf "${CYAN}If you need to update scripts, push changes to your GitHub repo; servers created later will fetch the updated files.${RESET}\n"
 exit 0
+
 
