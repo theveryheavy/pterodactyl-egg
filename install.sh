@@ -75,14 +75,4 @@ chmod +x -- *.sh 2>/dev/null || true
 touch .setup_required .deps 2>/dev/null || true
 
 printf "\n${GREEN}Installation complete.${RESET}\n"
-printf "${YELLOW}What to do next:${RESET}\n"
-printf "  1) Start the server to run the interactive setup.\n"
-printf "  2) Follow prompts to choose language/version/install method.\n"
-printf "  3) Upload your bot files and set the startup file in the Panel.\n\n"
-printf "${CYAN}If you need to update scripts, push changes to your GitHub repo; servers created later will fetch the updated files.${RESET}\n"
-
-# === WAIT FOR ANY KEY ===
-printf "\nPress any key to finish installation..."
-read -n 1 -s
-
 exit 0
