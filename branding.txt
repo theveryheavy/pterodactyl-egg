@@ -1,0 +1,4 @@
+====================================================
+   ★    Welcome to your Discord Bot Server    ★
+   Follow the prompts to setup and run your bot.
+====================================================
