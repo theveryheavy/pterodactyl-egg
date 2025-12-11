@@ -16,8 +16,10 @@ YELLOW="\e[33m"
 CYAN="\e[36m"
 RED="\e[31m"
 RESET="\e[0m"
+
 mkdir -p "$TARGET_DIR"
 cd "$TARGET_DIR"
+
 spinner() {
   local pid=$1
   local msg="$2"
@@ -33,6 +35,7 @@ spinner() {
   wait "$pid"
   return $?
 }
+
 download_file() {
   local file="$1"
   local url="${REPO_RAW_BASE}/${file}"
@@ -51,6 +54,7 @@ download_file() {
   printf "  ${GREEN}✔ OK${RESET}  (%s)\n" "$file"
   return 0
 }
+
 printf "${CYAN}HostingCo — Preparing Discord Bot server environment${RESET}\n\n"
 failed=0
 for f in "${FILES[@]}"; do
@@ -59,20 +63,26 @@ for f in "${FILES[@]}"; do
     break
   fi
 done
+
 if [ $failed -ne 0 ]; then
   printf "\n${RED}Installation aborted: failed to download required files.${RESET}\n"
   printf "Check the REPO_RAW_BASE variable in this install.sh and ensure files are public.\n"
   exit 2
 fi
+
 chmod +x -- *.sh 2>/dev/null || true
 : > .botconfig.json || true
 touch .setup_required .deps 2>/dev/null || true
+
 printf "\n${GREEN}Installation complete.${RESET}\n"
 printf "${YELLOW}What to do next:${RESET}\n"
 printf "  1) Start the server to run the interactive setup.\n"
 printf "  2) Follow prompts to choose language/version/install method.\n"
 printf "  3) Upload your bot files and set the startup file in the Panel.\n\n"
 printf "${CYAN}If you need to update scripts, push changes to your GitHub repo; servers created later will fetch the updated files.${RESET}\n"
+
+# === WAIT FOR ANY KEY ===
+printf "\nPress any key to finish installation..."
+read -n 1 -s
+
 exit 0
-
-
